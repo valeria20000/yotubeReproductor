@@ -76,7 +76,7 @@
           	%>
 	            <li class="list-group-item d-flex justify-content-between align-items-center">     
 	          	  	<a href="?id=<%=v.getId()%>"><%=v.getNombre()%></a>
-	          	  	<a href="?id=<%=v.getId()%>&op=<%=HomeController%>"><i style="color:red;" class="float-right fas fa-trash-alt"></i></a>
+	          	  	<a href="?id=<%=v.getId()%>&op=<%=HomeController.OP_ELIMINAR%>"><i style="color:red;" class="float-right fas fa-trash-alt"></i></a>
 	            </li>
             <%
           		} //end for
