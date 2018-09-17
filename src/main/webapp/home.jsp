@@ -1,3 +1,5 @@
+<%@page import="com.ipartek.formacion.youtube.Alert"%>
+<%@page import="com.ipartek.formacion.youtube.Usuario"%>
 <%@page import="com.ipartek.formacion.youtube.controller.HomeController"%>
 <%@page import="com.ipartek.formacion.youtube.Video"%>
 <%@page import="java.util.ArrayList"%>
@@ -7,7 +9,7 @@
 <html lang="en">
 
   <head>
-
+	<!-- Comienza todas las URLS del el href indicado -->
 	<base href="<%=request.getContextPath()%>/">
 	
     <meta charset="utf-8">
@@ -39,6 +41,27 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item active">
+            
+            
+            
+            
+            <%
+            Usuario usuario = (Usuario)session.getAttribute("usuario");
+        	if ( usuario == null ){
+          
+            %>
+            
+            <!-- formulario Login -->
+            <form action="login" method="post" class="form-inline mt-2 mt-md-0">
+	            <input name="usuario" class="form-control mr-sm-2" type="text" placeholder="Nombre Usuario" required pattern=".{3,30}">
+	            <input name="pass" class="form-control mr-sm-2" type="password" placeholder="Contraseña" required pattern=".{2,50}">
+	            <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Entrar</button>
+	           
+	          </form>
+	          <%
+            }else{
+            %> 
+            <!-- formulario Crear Video -->
               <form action="" method="post" class="form-inline mt-2 mt-md-0">
 	            <input name="id" class="form-control mr-sm-2" type="text" placeholder="ID 11 caracerteres" title="11 caracteres" required pattern=".{11,11}">
 	            <input name="nombre" class="form-control mr-sm-2" type="text" placeholder="Nombre minimo 2 letras" required pattern=".{2,125}">
@@ -46,15 +69,43 @@
 	          </form>
             </li>            
           </ul>
-          
+          <%
+            }
+          %>
           
           
         </div>
       </div>
     </nav>
 
+	
+
     <!-- Page Content -->
     <div class="container">
+    
+    <%
+    //Gestion de Alertas para el Usuario
+      Alert alert = (Alert)request.getAttribute("alert");
+      	if ( alert == null ){
+      		alert = (Alert)session.getAttribute("alert");
+      		session.setAttribute("alert", null); // eliminar atributo de session
+      	}
+      
+      	if( alert != null){
+     %>	
+     	<div class="container">
+				<div class="alert <%=alert.getTipo()%> alert-dismissible fade show" role="alert">
+				  <p><%=alert.getTexto()%></p>
+				  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				    <span aria-hidden="true">&times;</span>
+				  </button>
+				</div>
+			</div>
+    	
+    <%
+    }
+    
+    %>
 
       <div class="row">
 
@@ -100,8 +151,8 @@
               4.0 stars
             </div>
           </div>
+          
           <!-- /.card -->
-
           <div class="card card-outline-secondary my-4">
             <div class="card-header">
               Comentarios
@@ -115,7 +166,6 @@
               <hr>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
               <small class="text-muted">Posted by Anonymous on 3/1/17</small>
-              
             </div>
           </div>
           <!-- /.card -->
