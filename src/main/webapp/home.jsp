@@ -9,7 +9,8 @@
 <html lang="en">
 
   <head>
-	<!-- Comienza todas las URLS del el href indicado -->
+
+	<!-- Comenza todas las URLs desde el href indicado -->
 	<base href="<%=request.getContextPath()%>/">
 	
     <meta charset="utf-8">
@@ -42,58 +43,63 @@
           <ul class="navbar-nav ml-auto">
             <li class="nav-item active">
             
+            <% 
+            	//Gestion Usuario Logeado   
+            	Usuario usuario = (Usuario)session.getAttribute("usuario");
+            	if ( usuario == null ){            
+            %>	            
+            	
+             
             
-            
-            
-            <%
-            Usuario usuario = (Usuario)session.getAttribute("usuario");
-        	if ( usuario == null ){
-          
-            %>
-            
-            <!-- formulario Login -->
-            <form action="login" method="post" class="form-inline mt-2 mt-md-0">
+              <!-- formulario Login -->
+              <form action="login" method="post" class="form-inline mt-2 mt-md-0">
 	            <input name="usuario" class="form-control mr-sm-2" type="text" placeholder="Nombre Usuario" required pattern=".{3,30}">
 	            <input name="pass" class="form-control mr-sm-2" type="password" placeholder="Contraseña" required pattern=".{2,50}">
 	            <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Entrar</button>
-	           
-	          </form>
-	          <%
-            }else{
-            %> 
-            <!-- formulario Crear Video -->
+	          </form>            
+            <%
+            	} else {
+            %>              
+            
+             <div class="nav-user">
+             	<i class="fas fa-user"><%=usuario.getNombre()%></i>
+             	<a href="logout">Cerrar Session</a>
+             </div>	
+             
+            
+              <!-- formulario Crear Video -->
               <form action="" method="post" class="form-inline mt-2 mt-md-0">
 	            <input name="id" class="form-control mr-sm-2" type="text" placeholder="ID 11 caracerteres" title="11 caracteres" required pattern=".{11,11}">
 	            <input name="nombre" class="form-control mr-sm-2" type="text" placeholder="Nombre minimo 2 letras" required pattern=".{2,125}">
 	            <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Añadir</button>
-	          </form>
+	          </form>	          
+	          <%
+            	} 
+              %>  
+	          
             </li>            
           </ul>
-          <%
-            }
-          %>
+          
           
           
         </div>
       </div>
     </nav>
 
-	
-
     <!-- Page Content -->
     <div class="container">
     
-    <%
-    //Gestion de Alertas para el Usuario
-      Alert alert = (Alert)request.getAttribute("alert");
+      <%
+      	//Gestion de Alertas para el usuario      	
+        Alert alert = (Alert)request.getAttribute("alert");
       	if ( alert == null ){
       		alert = (Alert)session.getAttribute("alert");
       		session.setAttribute("alert", null); // eliminar atributo de session
       	}
       
       	if( alert != null){
-     %>	
-     	<div class="container">
+      	%>
+      		<div class="container">
 				<div class="alert <%=alert.getTipo()%> alert-dismissible fade show" role="alert">
 				  <p><%=alert.getTexto()%></p>
 				  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -101,16 +107,15 @@
 				  </button>
 				</div>
 			</div>
-    	
-    <%
-    }
+      	<%	
+      	}      
+      %>	
     
-    %>
 
       <div class="row">
 
         <div class="col-lg-3">        	
-          <h1 class="my-4">Lista Reproduccion</h1>
+          <h4 class="my-4">Lista Reproduccion</h4>
           <ul class="list-group">
           	<%
           		ArrayList<Video> videos = (ArrayList<Video>) request.getAttribute("videos");
@@ -134,7 +139,37 @@
             %>
             </ul>
             
+            <hr>
+            
+            <h4 class="my-4">Videos Visualizados</h4>
+	          <ul class="list-group">
+	          	<%
+	          		ArrayList<Video> reproducidos = (ArrayList<Video>) session.getAttribute("reproducidos");
+	          		if ( reproducidos != null ){
+		          		for( Video r : reproducidos ){
+		          	%>
+			            <li class="list-group-item d-flex justify-content-between align-items-center">     
+			          	  	<a href="?id=<%=r.getId()%>"><%=r.getNombre()%></a>	          	  	
+			            </li>
+		            <%
+	          			} //end for
+	          		}else{
+	          		%>
+	          			<li class="list-group-item d-flex justify-content-between align-items-center">
+	          				<p>*Por favor Inicia Session para guardar tus video reproducidos</p>
+	          			</li>
+	          		<%		
+	          		}
+	            %>
+	            </ul>
+            
           </div>
+          
+          
+         	
+	          
+          
+          
         
         <!-- /.col-lg-3 -->
 
@@ -151,8 +186,8 @@
               4.0 stars
             </div>
           </div>
-          
           <!-- /.card -->
+
           <div class="card card-outline-secondary my-4">
             <div class="card-header">
               Comentarios
@@ -166,6 +201,7 @@
               <hr>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
               <small class="text-muted">Posted by Anonymous on 3/1/17</small>
+              
             </div>
           </div>
           <!-- /.card -->

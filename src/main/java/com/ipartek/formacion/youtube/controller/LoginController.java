@@ -7,6 +7,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import com.ipartek.formacion.youtube.Alert;
+import com.ipartek.formacion.youtube.Usuario;
 
 
 @WebServlet("/login")
@@ -30,7 +34,7 @@ public class LoginController extends HttpServlet {
 
 	private void doProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		Aler alert = new Alert();
+		Alert alert = new Alert();
 		HttpSession session = request.getSession();
 		
 		try {
