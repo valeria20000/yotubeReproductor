@@ -13,9 +13,9 @@ public class VideoArrayListDAO implements CrudAble<Video> {
 	private VideoArrayListDAO() {
 		videos = new ArrayList<Video>();
 		try {
-			videos.add(new Video("LPDhuthFD98", "Surf Search Spot 2 0 video promo"));
-			videos.add(new Video("a9WnQFI8jQU", "Betagarri - Sweet Mary"));
-			videos.add(new Video("0sLK1SKfItM", "Su Ta Gar - Begira"));
+			videos.add(new Video("1xvP2AXbDXQ", "Fito&Fitipaldis - Entre dos mares"));
+			videos.add(new Video("mlw-bUR7MCQ", "Marea - Corazon de Mimbre"));
+			videos.add(new Video("L-Ds-FXGGQg", "Bruce Springsteen - You Never Can Tell"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

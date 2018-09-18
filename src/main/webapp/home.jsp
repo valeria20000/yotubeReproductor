@@ -24,10 +24,11 @@
 	
     <!-- Bootstrap core CSS -->
     <link href="https://blackrockdigital.github.io/startbootstrap-shop-item/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
     <!-- Custom styles for this template -->
     <link href="https://blackrockdigital.github.io/startbootstrap-shop-item/css/shop-item.css" rel="stylesheet">
 
+	<link rel="stylesheet" href="css/styles.css" >
+	
   </head>
 
   <body>
@@ -63,12 +64,13 @@
             
              <div class="nav-user">
              	<i class="fas fa-user"><%=usuario.getNombre()%></i>
+             	<a href="backoffice/index.jsp">Acceder Backoffice</a>
              	<a href="logout">Cerrar Session</a>
              </div>	
              
             
               <!-- formulario Crear Video -->
-              <form action="" method="post" class="form-inline mt-2 mt-md-0">
+              <form action="inicio" method="post" class="form-inline mt-2 mt-md-0">
 	            <input name="id" class="form-control mr-sm-2" type="text" placeholder="ID 11 caracerteres" title="11 caracteres" required pattern=".{11,11}">
 	            <input name="nombre" class="form-control mr-sm-2" type="text" placeholder="Nombre minimo 2 letras" required pattern=".{2,125}">
 	            <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Añadir</button>
@@ -131,8 +133,8 @@
           		for( Video v : videos ){
           	%>
 	            <li class="list-group-item d-flex justify-content-between align-items-center">     
-	          	  	<a href="?id=<%=v.getId()%>"><%=v.getNombre()%></a>
-	          	  	<a href="?id=<%=v.getId()%>&op=<%=HomeController.OP_ELIMINAR%>"><i style="color:red;" class="float-right fas fa-trash-alt"></i></a>
+	          	  	<a href="inicio?id=<%=v.getId()%>"><%=v.getNombre()%></a>
+	          	  	<a href="inicio?id=<%=v.getId()%>&op=<%=HomeController.OP_ELIMINAR%>"><i style="color:red;" class="float-right fas fa-trash-alt"></i></a>
 	            </li>
             <%
           		} //end for
