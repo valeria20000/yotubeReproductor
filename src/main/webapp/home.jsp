@@ -205,6 +205,27 @@
               <small class="text-muted">Posted by Anonymous on 3/1/17</small>
               
             </div>
+            
+              <% 
+            	//Gestion Usuario Logeado   
+            	if ( usuario != null ){            
+            %>	
+           <!-- .comentario --> 
+     		<form method="post" action="">
+       		 	<p>
+            		<label for="comentario">
+                	Añade un comentario en publico
+            		</label> <br/>
+           											
+            			<textarea name="comentario" id="comentario" rows="5" cols="80"></textarea>
+        		</p>
+   			<button class="btn btn-outline-info my-2 my-sm-0" type="submit">Comentar</button>
+    		</form>
+    		 <%
+            	} 
+              %> 
+             <!-- /.comentario --> 
+            
           </div>
           <!-- /.card -->
 
