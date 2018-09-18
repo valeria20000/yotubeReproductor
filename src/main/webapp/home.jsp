@@ -1,3 +1,4 @@
+<%@page import="com.ipartek.formacion.youtube.Comentario"%>
 <%@page import="com.ipartek.formacion.youtube.Alert"%>
 <%@page import="com.ipartek.formacion.youtube.Usuario"%>
 <%@page import="com.ipartek.formacion.youtube.controller.HomeController"%>
@@ -195,15 +196,11 @@
               Comentarios
             </div>
             <div class="card-body">
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
-              <small class="text-muted">Posted by Anonymous on 3/1/17</small>
-              <hr>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
-              <small class="text-muted">Posted by Anonymous on 3/1/17</small>
-              <hr>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
-              <small class="text-muted">Posted by Anonymous on 3/1/17</small>
-              
+            	<%for(Comentario comentario: videoInicio.getComentarios()){ %>
+              		<p><%= comentario.getComentario()%></p>
+              		<small class="text-muted">Comentario de <%= comentario.getUsuario().getNombre() %></small>
+              		<hr>
+              	<%} %>          
             </div>
             
               <% 
@@ -211,14 +208,13 @@
             	if ( usuario != null ){            
             %>	
            <!-- .comentario --> 
-     		<form method="post" action="">
-       		 	<p>
+     		<form method="post" action="crearComent">
             		<label for="comentario">
-                	Añade un comentario en publico
-            		</label> <br/>
-           											
-            			<textarea name="comentario" id="comentario" rows="5" cols="80"></textarea>
-        		</p>
+                		Añade un comentario en publico
+            		</label> 
+            		<br/>
+           			<textarea name="comentario" id="comentario" rows="5" cols="80"></textarea>
+           			<input type="hidden" name="idVideoComentario" value="<%=videoInicio.getId()%>">
    			<button class="btn btn-outline-info my-2 my-sm-0" type="submit">Comentar</button>
     		</form>
     		 <%

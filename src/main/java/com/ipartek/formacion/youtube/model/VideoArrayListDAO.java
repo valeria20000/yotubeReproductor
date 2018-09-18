@@ -3,6 +3,8 @@ package com.ipartek.formacion.youtube.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ipartek.formacion.youtube.Comentario;
+import com.ipartek.formacion.youtube.Usuario;
 import com.ipartek.formacion.youtube.Video;
 
 public class VideoArrayListDAO implements CrudAble<Video> {
@@ -11,11 +13,20 @@ public class VideoArrayListDAO implements CrudAble<Video> {
 	private static List<Video> videos = null;
 
 	private VideoArrayListDAO() {
+		//crear ArrayLista vacio
 		videos = new ArrayList<Video>();
 		try {
-			videos.add(new Video("1xvP2AXbDXQ", "Fito&Fitipaldis - Entre dos mares"));
-			videos.add(new Video("mlw-bUR7MCQ", "Marea - Corazon de Mimbre"));
-			videos.add(new Video("L-Ds-FXGGQg", "Bruce Springsteen - You Never Can Tell"));
+
+			//crear los videos con la lista de comentarios
+			Video v1 = new Video("1xvP2AXbDXQ", "Fito&Fitipaldis - Entre dos mares", new ArrayList<Comentario>());
+			Video v2 = new Video("mlw-bUR7MCQ", "Marea - Corazon de Mimbre", new ArrayList<Comentario>());
+			Video v3 = new Video("L-Ds-FXGGQg", "Bruce Springsteen - You Never Can Tell", new ArrayList<Comentario>());
+		
+			videos.add(v1);
+			videos.add(v2);
+			videos.add(v3);
+			
+			videos.add(new Video());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -73,6 +84,19 @@ public class VideoArrayListDAO implements CrudAble<Video> {
 			}
 		}	
 		return resul;
+	}
+
+	public void addComentario(String id, String comentario, Usuario usuario) {
+		
+		for(int i=0;i<videos.size();i++) {
+			Video v = videos.get(i);
+			if(v.getId().equals(id)) {
+				Comentario nuevoComentario = new Comentario(usuario, comentario);
+				v.getComentarios().add(nuevoComentario);
+				videos.set(i, v);
+			}
+		}
+		
 	}
 
 }
