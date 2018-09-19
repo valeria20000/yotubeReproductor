@@ -1,6 +1,9 @@
 package com.ipartek.formacion.youtube.filter;
 
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.Map;
+
 import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -22,8 +25,7 @@ import com.ipartek.formacion.youtube.Usuario;
  * <br>
  * si el usuario no se ha logeado => redirect "/inicio" <br>
  */
-@WebFilter(dispatcherTypes = { DispatcherType.REQUEST }
-							, urlPatterns = { "/backoffice/*"})
+@WebFilter(dispatcherTypes = { DispatcherType.REQUEST }, urlPatterns = { "/backoffice/*" })
 public class FilterBackoffice implements Filter {
 
 	/**
@@ -59,6 +61,8 @@ public class FilterBackoffice implements Filter {
 				chain.doFilter(request, response);
 			} else {
 
+				informacionCliente(req);
+
 				res.sendRedirect(req.getContextPath() + "/inicio");
 			}
 
@@ -75,6 +79,40 @@ public class FilterBackoffice implements Filter {
 	 */
 	public void init(FilterConfig fConfig) throws ServletException {
 		System.out.println("se ejecuta al inicia App web");
+
+		/**
+		 * MOstamos informacion sobre la request del cliente
+		 */
+
 	}
 
+	private void informacionCliente(HttpServletRequest req) {
+		System.out.println("-----------------------------------------------------------");
+
+		System.out.println("RemoteHost : " + req.getRemoteHost());
+		System.out.println("RemoteHost : " + req.getRemoteAddr());
+		System.out.println("RemoteHost : " + req.getRemotePort());
+		System.out.println("RemoteHost : " + req.getRemoteUser());
+
+		Enumeration nombresCabeceras = req.getHeaderNames();
+		String metadato;
+		while (nombresCabeceras.hasMoreElements()) {
+			metadato = (String) nombresCabeceras.nextElement();
+			System.out.println(metadato + ":" + req.getHeader(metadato));
+
+		}
+		System.out.println("");
+		System.out.println("parametros:");
+
+		Enumeration<String> parameterNames = req.getParameterNames();
+		while (parameterNames.hasMoreElements()) {
+			String key = (String) parameterNames.nextElement();
+			String val = req.getParameter(key);
+			System.out.println("parametros = <" + key + "><" + val + ">");
+
+			System.out.println("-----------------------------------------------------------");
+
+		}
+
+	}
 }
