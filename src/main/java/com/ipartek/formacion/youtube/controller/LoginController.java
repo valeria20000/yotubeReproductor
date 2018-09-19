@@ -44,7 +44,7 @@ public class LoginController extends HttpServlet {
 			String pass = request.getParameter("pass");
 			
 			//comprobar usuario
-			if ( "admin".equals(pass) && "admin".equals(usuarioNombre))  {
+			if ( "admin".equals(pass) && "admin".equals(usuarioNombre) || "pepe".equals(pass) && "pepe".equals(usuarioNombre) || "manoli".equals(pass) && "manoli".equals(usuarioNombre) || "josepo".equals(pass) && "josepo".equals(usuarioNombre) )  {
 				
 				alert.setTexto("BienVenido " + usuarioNombre );
 				alert.setTipo(Alert.PRIMARY);
