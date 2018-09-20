@@ -1,11 +1,16 @@
 package com.ipartek.formacion.youtube.controller;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -49,7 +54,15 @@ public class HomeController extends HttpServlet {
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-	
+		//GESTIONAR COOKIES ULTIMA VISITA
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Cookie cVisita = new Cookie("cVisita", URLEncoder.encode( dateFormat.format(new Date()), "UTF-8"));
+		cVisita.setMaxAge(60*60*24*365);//1año
+		response.addCookie(cVisita);
+		
+		//RECUPERAR TODAS LAS COOKIES
+		Cookie cookies[] = request.getCookies();
+		
 		super.service(request, response); // llama a los metodos GET o POST
 
 		// despues de realizar GET o POST

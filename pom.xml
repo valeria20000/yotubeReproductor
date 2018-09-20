@@ -36,7 +36,7 @@
 			<version>${javax.servlet.jsp.version}</version>
 			<scope>provided</scope>
 		</dependency>
-
+<!-- TabLib - Java Server Tag Library -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
