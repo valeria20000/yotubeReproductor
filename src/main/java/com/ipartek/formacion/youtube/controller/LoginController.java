@@ -47,6 +47,7 @@ public class LoginController extends HttpServlet {
 			//recoger parametros
 			String usuarioNombre = request.getParameter("usuario");
 			String pass = request.getParameter("pass");
+			String recordar = request.getParameter("recordar");
 			
 			//comprobar usuario
 			if ( "admin".equals(pass) && "admin".equals(usuarioNombre) || "pepe".equals(pass) && "pepe".equals(usuarioNombre) || "manoli".equals(pass) && "manoli".equals(usuarioNombre) || "josepo".equals(pass) && "josepo".equals(usuarioNombre) )  {
@@ -60,6 +61,23 @@ public class LoginController extends HttpServlet {
 				session.setAttribute("usuario", u);
 				session.setMaxInactiveInterval(60*5); // 5min
 				
+				if("recordar".equals(recordar)) {
+					Cookie c = new Cookie("nomUsuario", usuarioNombre);
+					
+					c.setMaxAge(60*60*24*365);
+					
+					response.addCookie(c);
+				}else {
+					Cookie cookies[] = request.getCookies();
+					
+					for(Cookie c: cookies) {
+						if("nomUsuario".equals(c.getName())) {				
+							c.setMaxAge(0);
+							
+							response.addCookie(c);
+						}
+					}
+				}
 				
 			}else{
 				
