@@ -9,22 +9,24 @@
 <%@page import="com.ipartek.formacion.youtube.Video"%>
 <%@page import="java.util.ArrayList"%>
 
+<c:set var="idioma" value="eu_EU" scope="session" />
+<fmt:setLocale value="${idioma}" />
+<fmt:setBundle basename="idiomas" /> 
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="${idioma}">
 
 <head>
 
 <!-- Comenza todas las URLs desde el href indicado -->
 <base href="<%=request.getContextPath()%>/">
-
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>Youtube Video Play List</title>
+<title>Youtube Video Play List </title>
 
 <link rel="stylesheet"
 	href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
@@ -79,7 +81,7 @@
 					}
 				}
 			%>
-			<span class="text-warning">Ultima visita <%=fecha%></span>
+			<!--  <span class="text-warning">Ultima visita <%=fecha%></span>-->
 		
 			<div class="collapse navbar-collapse" id="navbarResponsive">
 				<ul class="navbar-nav ml-auto">
@@ -91,7 +93,7 @@
 									placeholder="Nombre Usuario" value="<%= nomUsuario %>" required pattern=".{3,30}">
 								<input name="pass" class="form-control mr-sm-2" type="password"
 									placeholder="Contraseña" required pattern=".{2,50}">
-								<li><input type="checkbox" name="recordar" value="recordar" <%= checked %> > Recordar usuario</li>
+								<li><input type="checkbox" name="recordar" value="recordar" <%= checked %> > Recordar</li>
 								<button class="btn btn-outline-info my-2 my-sm-0" type="submit">Entrar</button>
 							</form>
 						</c:if> <c:if test="${not empty usuario}">
@@ -146,7 +148,7 @@
 		<div class="row">
 
 			<div class="col-lg-3">
-				<h4 class="my-4">Lista Reproduccion</h4>
+				<h4 class="my-4"><fmt:message key="lista.reproduccion"/></h4>
 				<ul class="list-group">
 					<c:forEach items="${videos}" var="v">
 
@@ -247,8 +249,10 @@
 	<!-- Footer -->
 	<footer class="py-5 bg-dark">
 		<div class="container">
+		
+		<c:set var = "anyo" value="<%= new java.util.Date() %>"/>
 			<p class="m-0 text-center text-white">Copyright &copy; Your
-				Website 2017</p>
+				Website <fmt:formatDate type="both" pattern="yyyy" value="${anyo}"/></p>
 		</div>
 		<!-- /.container -->
 	</footer>
