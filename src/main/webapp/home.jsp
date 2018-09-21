@@ -59,19 +59,28 @@
 
 			<%
 				String fecha = "";
+				String nomUsuario = "";
+				String checked = "";
 				Cookie[] cookies = request.getCookies();
-				for (Cookie c : cookies) {
-					if ("cVisita".equals(c.getName())) {
-						fecha = URLDecoder.decode(c.getValue(), "UTF-8");
-						break;
+				
+				if(cookies!=null){
+				
+					for (Cookie c : cookies) {
+						if ("cVisita".equals(c.getName())) {
+							fecha = URLDecoder.decode(c.getValue(), "UTF-8");
+							break;
+						}
+						
+						if("nomUsuario".equals(c.getName())){
+							nomUsuario = c.getValue();
+							checked = "checked";
+							break;
+						}
 					}
 				}
 			%>
 			<span class="text-warning">Ultima visita <%=fecha%></span>
-			
-			
 		
-
 			<div class="collapse navbar-collapse" id="navbarResponsive">
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item active text-primary"><c:if test="${empty usuario}">
@@ -79,10 +88,10 @@
 							<form action="login" method="post"
 								class="form-inline mt-2 mt-md-0">
 								<input name="usuario" class="form-control mr-sm-2" type="text"
-									placeholder="Nombre Usuario" required pattern=".{3,30}">
+									placeholder="Nombre Usuario" value="<%= nomUsuario %>" required pattern=".{3,30}">
 								<input name="pass" class="form-control mr-sm-2" type="password"
 									placeholder="Contraseña" required pattern=".{2,50}">
-								<li><input type="checkbox" name="recordar" value="recordar" > Recordar usuario</li>
+								<li><input type="checkbox" name="recordar" value="recordar" <%= checked %> > Recordar usuario</li>
 								<button class="btn btn-outline-info my-2 my-sm-0" type="submit">Entrar</button>
 							</form>
 						</c:if> <c:if test="${not empty usuario}">
@@ -201,16 +210,16 @@
 				<div class="card card-outline-secondary my-4">
 					<div class="card-header">Comentarios</div>
 					<div class="card-body">
-						<c:forEach items="${comentario}" var="c">
+						<c:forEach items="${videoInicio.comentarios}" var="c">
 							<p>${c.comentario}</p>
 							<small class="text-muted">Comentario de
-								${c.comentario.usuario.nombre}</small>
+								${c.usuario.nombre}</small>
 							<hr>
 						</c:forEach>
 
 					</div>
 
-					<c:if test="${empty usuario}">
+					<c:if test="${not empty usuario}">
 
 						<!-- .comentario -->
 						<form method="post" action="crearComent">
