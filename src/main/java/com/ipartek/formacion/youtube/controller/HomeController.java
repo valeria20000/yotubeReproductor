@@ -3,6 +3,8 @@ package com.ipartek.formacion.youtube.controller;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.Date;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -54,15 +56,39 @@ public class HomeController extends HttpServlet {
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		//GESTIONAR COOKIES ULTIMA VISITA
+		// idiomas
+		HttpSession session = request.getSession();
+		String idioma = request.getParameter("idioma");
+
+		try {
+			if (idioma == null) {
+				idioma = (String) session.getAttribute("idioma");
+			}
+			if (idioma == null) {
+				idioma = request.getLocale().toString();
+				if (idioma.length() != 5) {
+					idioma = "es_ES";
+				}
+
+			}
+		} catch (Exception e) {
+			idioma = "es_ES";
+		} finally {
+			session.setAttribute("idioma", idioma);
+		}
+		// Locale locale=new Locale("en", "EN");
+		Locale locale = new Locale(idioma.split("_")[0], idioma.split("_")[1]);
+		ResourceBundle idiomas = ResourceBundle.getBundle("idiomas", locale);
+
+		// GESTIONAR COOKIES ULTIMA VISITA
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		Cookie cVisita = new Cookie("cVisita", URLEncoder.encode( dateFormat.format(new Date()), "UTF-8"));
-		cVisita.setMaxAge(60*60*24*365);//1año
+		Cookie cVisita = new Cookie("cVisita", URLEncoder.encode(dateFormat.format(new Date()), "UTF-8"));
+		cVisita.setMaxAge(60 * 60 * 24 * 365);// 1año
 		response.addCookie(cVisita);
-		
-		//RECUPERAR TODAS LAS COOKIES
+
+		// RECUPERAR TODAS LAS COOKIES
 		Cookie cookies[] = request.getCookies();
-		
+
 		super.service(request, response); // llama a los metodos GET o POST
 
 		// despues de realizar GET o POST

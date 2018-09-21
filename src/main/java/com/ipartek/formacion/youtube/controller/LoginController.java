@@ -1,7 +1,9 @@
 package com.ipartek.formacion.youtube.controller;
 
+
+
 import java.io.IOException;
-import java.time.LocalDate;
+import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 
 import com.ipartek.formacion.youtube.Alert;
 import com.ipartek.formacion.youtube.Usuario;
@@ -40,13 +43,16 @@ public class LoginController extends HttpServlet {
 		
 		Alert alert = new Alert();
 		HttpSession session = request.getSession();
+	
 		
 		try {
-			//idiomas
-			Locale locale = new Locale("es_ES");
-			ResourceBundle idiomas = ResourceBundle.getBundle("idiomas, locale" );
-		
 			
+			//idiomas
+			String idioma = (session.getAttribute("idioma")!=null)?(String)session.getAttribute("idioma"):"es_ES";			
+			//Locale locale = new Locale("en", "EN");
+			Locale locale = new Locale( idioma.split("_")[0] , idioma.split("_")[1] );			
+			ResourceBundle idiomas = ResourceBundle.getBundle("idiomas", locale );
+		
 			
 			//recoger parametros
 			String usuarioNombre = request.getParameter("usuario");
@@ -56,7 +62,9 @@ public class LoginController extends HttpServlet {
 			//comprobar usuario
 			if ( "admin".equals(pass) && "admin".equals(usuarioNombre) || "pepe".equals(pass) && "pepe".equals(usuarioNombre) || "manoli".equals(pass) && "manoli".equals(usuarioNombre) || "josepo".equals(pass) && "josepo".equals(usuarioNombre) )  {
 				
-				alert.setTexto(idiomas.getString("msj.bienvenida") + " " + usuarioNombre );
+
+				alert.setTexto(  MessageFormat.format(idiomas.getString("msj.bienvenida"), usuarioNombre) );
+				
 				alert.setTipo(Alert.PRIMARY);
 				
 				//guardar Usuario en session
