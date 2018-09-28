@@ -37,7 +37,7 @@
 							
 							<c:if test="${not empty sessionScope.usuario}">
 							<i onclick="showModalEliminar(${v.id}, ${HomeController.OP_ELIMINAR} )" style="color: red;" class="float-right fas fa-trash-alt"></i>
-							<a href="inicio?id=${v.id}&op=${HomeController.OP_MODIFICAR}"><i style="color: red;" class="float-right fas fa-pencil-alt"></i></a>
+						<i onclick="showModalModificar(${v.id}, '${v.nombre}' )" style="color: red;" class="float-right fas fa-pencil-alt"></i>
 							</c:if>
 							</li>
 					</c:forEach>
@@ -47,7 +47,7 @@
 				
 
 
-		<!-- Modal -->
+		<!-- Modal Eliminar-->
 		<div class="modal fade" id="modalEliminar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   			<div class="modal-dialog" role="document">
    			 <div class="modal-content">
@@ -68,7 +68,36 @@
   </div>
 </div>
 
-
+ <!-- modalModificar -->
+			<div class="modal fade" id="modalModificar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="exampleModalLabel">Modificar Nombre Video</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+			        
+			      </div>
+			      <div class="modal-footer">
+			      
+			      	<form action="inicio" method="post">			      		
+			      		<input type="text" id="nombre" name="nombre" required >
+			      		<input type="hidden" name="id" id="id" value="-1">
+			      		<input type="hidden" name="op" value="${HomeController.OP_MODIFICAR}">
+			      		<input type="submit" value="Modificar">
+			      	</form>
+			      
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+			        			        
+			      </div>
+			    </div>
+			  </div>
+			</div>
+            
+            
 				<hr>
 
 				<h4 class="my-4">Videos Visualizados</h4>
@@ -100,10 +129,12 @@
 			<div class="col-lg-9">
 
 				<div class="card mt-4">
+				
+				<!-- https://tutorialzine.com/2015/08/how-to-control-youtubes-video-player-with-javascript -->
 
-					<iframe id="iframe" width="823" height="415"
-						src="https://www.youtube.com/embed/${videoInicio.codigo}?autoplay=1"
-						frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+				<div id="video-placeholder"></div>
+
+	
 
 					<div class="card-body">
 						<h3 class="card-title">${videoInicio.nombre}</h3>

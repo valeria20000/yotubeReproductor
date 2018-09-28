@@ -98,6 +98,13 @@ public class HomeController extends HttpServlet {
 		// despues de realizar GET o POST
 		request.setAttribute("videos", videos);
 		request.setAttribute("videoInicio", videoInicio);
+
+		String playlist = "";
+		for (int i = 1; i < videos.size(); i++) {
+			playlist += videos.get(i).getCodigo() + ",";
+		}
+
+		request.setAttribute("playlist", playlist);
 		request.getRequestDispatcher("home.jsp").forward(request, response);
 
 	}
@@ -123,6 +130,7 @@ public class HomeController extends HttpServlet {
 					alert = new Alert();
 				}
 			}
+
 			// listado videos
 			videos = (ArrayList<Video>) dao.getAll();
 
@@ -170,15 +178,31 @@ public class HomeController extends HttpServlet {
 			// recoger parametros
 			String codigo = request.getParameter("codigo");
 			String nombre = request.getParameter("nombre");
+			String id = request.getParameter("id");
+			String op = request.getParameter("op");
 
-			// insertar
-			videoInicio = new Video(codigo, nombre);
-			if (dao.insert(videoInicio)) {
-				alert = new Alert(Alert.SUCCESS, "Gracias por subir tu video");
+			// Modificar ?
+			if (op != null && OP_MODIFICAR.equals(op)) {
+				Video v = dao.getById(id);
+				v.setNombre(nombre);
+				if (dao.update(v)) {
+					alert = new Alert(Alert.SUCCESS, "Video Modificado correctamente");
+				} else {
+					alert = new Alert();
+				}
+				// insertar
 			} else {
-				alert = new Alert(Alert.WARNING,
-						"Error no se puede crear el video, por favor asegura que no este duplicado el video ");
+
+				videoInicio = new Video(codigo, nombre);
+				if (dao.insert(videoInicio)) {
+					alert = new Alert(Alert.SUCCESS, "Gracias por subir tu video");
+				} else {
+					alert = new Alert(Alert.WARNING,
+							"Error no se puede crear el video, por favor asegura que no este duplicado el video ");
+				}
+
 			}
+
 			// pedir listado
 			videos = (ArrayList<Video>) dao.getAll();
 
