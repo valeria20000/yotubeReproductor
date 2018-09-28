@@ -68,7 +68,7 @@
 							<!-- formulario Crear Video -->
 							<form action="inicio" method="post"
 								class="form-inline mt-2 mt-md-0">
-								<input name="id" class="form-control mr-sm-2" type="text"
+								<input name="codigo" class="form-control mr-sm-2" type="text"
 									placeholder="ID 11 caracerteres" title="11 caracteres" required
 									pattern=".{11,11}"> <input name="nombre"
 									class="form-control mr-sm-2" type="text"

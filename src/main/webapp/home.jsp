@@ -33,13 +33,41 @@
 
 						<li
 							class="list-group-item d-flex justify-content-between align-items-center">
-							<a href="inicio?id=${v.id}">${v.nombre}</a> <a
-							href="inicio?id=${v.id}&op=<%=HomeController.OP_ELIMINAR%>"><i
-								style="color: red;" class="float-right fas fa-trash-alt"></i></a>
-						</li>
+							<a href="inicio?id=${v.id}">${v.nombre}</a> 
+							
+							<c:if test="${not empty sessionScope.usuario}">
+							<i onclick="showModalEliminar(${v.id}, ${HomeController.OP_ELIMINAR} )" style="color: red;" class="float-right fas fa-trash-alt"></i>
+							<a href="inicio?id=${v.id}&op=${HomeController.OP_MODIFICAR}"><i style="color: red;" class="float-right fas fa-pencil-alt"></i></a>
+							</c:if>
+							</li>
 					</c:forEach>
 
 				</ul>
+				
+				
+
+
+		<!-- Modal -->
+		<div class="modal fade" id="modalEliminar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  			<div class="modal-dialog" role="document">
+   			 <div class="modal-content">
+     	 <div class="modal-header">
+       		 <h5 class="modal-title" id="exampleModalLabel">Atención!!!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ¿Estas seguro que quieres eliminar el video?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+       <a id="btnEliminar" href="#" class="btn btn-danger">Eliminar</a>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 				<hr>
 
@@ -74,7 +102,7 @@
 				<div class="card mt-4">
 
 					<iframe id="iframe" width="823" height="415"
-						src="https://www.youtube.com/embed/${videoInicio.id}?autoplay=1"
+						src="https://www.youtube.com/embed/${videoInicio.codigo}?autoplay=1"
 						frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 					<div class="card-body">
@@ -88,34 +116,7 @@
 					</div>
 				</div>
 				<!-- /.card -->
-				<div class="card card-outline-secondary my-4">
-					<div class="card-header">Comentarios</div>
-					<div class="card-body">
-						<c:forEach items="${videoInicio.comentarios}" var="c">
-							<p>${c.comentario}</p>
-							<small class="text-muted">Comentario de
-								${c.usuario.nombre}</small>
-							<hr>
-						</c:forEach>
-
-					</div>
-
-					<c:if test="${not empty usuario}">
-
-						<!-- .comentario -->
-						<form method="post" action="crearComent">
-							<label for="comentario"> Añade un comentario en publico </label>
-							<br />
-							<textarea name="comentario" id="comentario" rows="5" cols="80"></textarea>
-							<input type="hidden" name="idVideoComentario"
-								value="${videoInicio.id}">
-							<button class="btn btn-outline-info my-2 my-sm-0" type="submit">Comentar</button>
-						</form>
-					</c:if>
-
-					<!-- /.comentario -->
-
-				</div>
+	
 				<!-- /.card -->
 
 			</div>

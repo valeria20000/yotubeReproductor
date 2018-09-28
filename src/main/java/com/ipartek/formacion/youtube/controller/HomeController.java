@@ -18,11 +18,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.ipartek.formacion.youtube.Alert;
 import com.ipartek.formacion.youtube.Usuario;
 import com.ipartek.formacion.youtube.Video;
-import com.ipartek.formacion.youtube.model.VideoArrayListDAO;
-import com.ipartek.formacion.youtube.model.VideoDAO;
 
+import com.ipartek.formacion.youtube.model.VideoDAO;
 
 /**
  * Servlet implementation class HomeController
@@ -33,6 +33,8 @@ public class HomeController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	public static final String OP_ELIMINAR = "1";
+	public static final String OP_MODIFICAR = "1";
+
 	private static VideoDAO dao;
 	private ArrayList<Video> videos;
 	private Video videoInicio;
@@ -106,7 +108,7 @@ public class HomeController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		Alert alert = null;
 		try {
 
 			// parametros
@@ -115,9 +117,12 @@ public class HomeController extends HttpServlet {
 
 			// eliminar ?
 			if (op != null && OP_ELIMINAR.equals(op)) {
-				dao.delete(id);
+				if (dao.delete(id)) {
+					alert = new Alert(Alert.SUCCESS, "Video Eliminado correctamente");
+				} else {
+					alert = new Alert();
+				}
 			}
-
 			// listado videos
 			videos = (ArrayList<Video>) dao.getAll();
 
@@ -142,12 +147,14 @@ public class HomeController extends HttpServlet {
 
 			} else if (!videos.isEmpty()) {
 				videoInicio = videos.get(0);
+
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			alert = new Alert();
 		} finally {
-
+			request.setAttribute("alert", alert);
 		}
 	}
 
@@ -157,23 +164,29 @@ public class HomeController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		Alert alert = null;
 		try {
 
 			// recoger parametros
-			String id = request.getParameter("id");
+			String codigo = request.getParameter("codigo");
 			String nombre = request.getParameter("nombre");
 
 			// insertar
-			videoInicio = new Video(id, nombre);
-			dao.insert(videoInicio);
-
+			videoInicio = new Video(codigo, nombre);
+			if (dao.insert(videoInicio)) {
+				alert = new Alert(Alert.SUCCESS, "Gracias por subir tu video");
+			} else {
+				alert = new Alert(Alert.WARNING,
+						"Error no se puede crear el video, por favor asegura que no este duplicado el video ");
+			}
 			// pedir listado
 			videos = (ArrayList<Video>) dao.getAll();
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			alert = new Alert();
 		} finally {
-
+			request.setAttribute("alert", alert);
 		}
 	}
 
